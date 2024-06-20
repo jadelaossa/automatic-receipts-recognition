@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 4
+names: ['item', 'store_name', 'total_amount', 'transaction_date']
+
+roboflow:
+  workspace: receipts-6nx0i
+  project: receipts-recognition
+  version: 1
+  license: Public Domain
+  url: https://universe.roboflow.com/receipts-6nx0i/receipts-recognition/dataset/1

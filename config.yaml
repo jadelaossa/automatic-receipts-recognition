@@ -1,0 +1,16 @@
+path: /home/jadelaossa/Workspaces/CIDaeN/tfm/automatic-receipts-recognition/data  # local env
+train: /train/images  # train images (relative to 'path') 4 images
+val: /valid/images  # val images (relative to 'path') 4 images
+test:  /test/images # test images (optional)
+
+# Classes
+names:
+  0: store_name
+  1: store_address
+  2: transaction_date
+  3: transaction_time
+  4: product
+  5: quantity
+
+# Download script/URL (optional)
+download:
