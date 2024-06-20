@@ -1,7 +1,8 @@
-path: /home/jadelaossa/Workspaces/CIDaeN/tfm/automatic-receipts-recognition/data  # local env
-train: /train/images  # train images (relative to 'path') 4 images
-val: /valid/images  # val images (relative to 'path') 4 images
-test:  /test/images # test images (optional)
+# path: /home/jadelaossa/Workspaces/CIDaeN/tfm/automatic-receipts-recognition/data  # local env
+path: /content/automatic-receipts-recognition/data # google colab
+train: train/images  # train images (relative to 'path') 4 images
+val: valid/images  # val images (relative to 'path') 4 images
+test:  test/images # test images (optional)
 
 # Classes
 names:
