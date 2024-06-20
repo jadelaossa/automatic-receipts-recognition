@@ -1,2 +1,3 @@
+.venv/
 data/images/
 rename_images.py
