@@ -2,14 +2,13 @@ from ultralytics import YOLO
 
 
 # load the model
-model = YOLO("runs/detect/train/weights/best.pt")
+model = YOLO("runs/detect/train2/weights/best.pt")
 
 # run batched inference on a list of images
 results = model([
-    "data/test/images/receipt_00024_jpeg.rf.3f9f40393acc174489b78c7709d47cf6.jpg",
-    "data/test/images/receipt_00077_jpeg.rf.037ce073d1740073ec73836902ca550c.jpg",
-    "data/test/images/receipt_00135_jpg.rf.bab58cb3dd7e7e617f57dfa554ea9601.jpg",
-    "data/test/images/receipt_00108_jpeg.rf.1d531dd3e153e66c5396ab45fdd10ea8.jpg"
+    "data/digital/mercadona/test/images/mercadona_00005_png.rf.e389c6b7c2ae4aae357063fe1ad08335.jpg",
+    "data/digital/mercadona/test/images/mercadona_00009_png.rf.5731b6ae78e6a94f3fdcaf2a93442186.jpg",
+    "data/digital/mercadona/test/images/mercadona_00024_png.rf.5f9771a1514c4c83e3f985ab0845c5c7.jpg"
 ])
 
 for result in results:
