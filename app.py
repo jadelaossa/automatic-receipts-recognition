@@ -1,0 +1,135 @@
+import base64
+import glob
+from io import BytesIO
+import json
+from PIL import Image
+import os
+import pytesseract
+import re
+import shutil
+import streamlit as st
+from ultralytics import YOLO
+
+
+CROPS_DIR = "./st-crops"
+
+def image_to_base64(image: Image) -> str:
+    buffered = BytesIO()
+    image.save(buffered, format="PNG")
+    img_str = base64.b64encode(buffered.getvalue()).decode()
+    return img_str
+
+def pytesseract_text_extraction(image_path: str, lang: str = "eng+spa") -> str:
+    """
+    Extracts text from an image using pytesseract and cleans it by removing unwanted characters.
+
+    :param image_path (str): Path to the image file.
+    :param lang (str): Language(s) to be used by pytesseract for OCR. Default is "eng+spa".
+    :return cleaned_text (str): The extracted and cleaned text.
+    """
+    # Perform OCR to extract text
+    text = pytesseract.image_to_string(image_path, lang=lang)
+
+    # Clean the text by removing unwanted characters
+    cleaned_text = re.sub(r"[\x0c\n]", "", text)
+
+    return cleaned_text
+
+@st.cache_data
+def load_model(model_dir: str):
+    model = YOLO(model_dir)
+    return model
+
+# 1. Cargar el modelo
+model = load_model("./runs/detect/train7/weights/best.pt")
+
+def main():
+    
+    st.title("🧾 Readceipt")
+    st.markdown("<br>", unsafe_allow_html=True)  # Insert a line break
+    
+    # 2. Subir un imagen
+    uploaded_file = st.file_uploader("Choose a receipt file", type=["jpg", "jpeg", "png"])
+
+    if uploaded_file is not None:
+        image = Image.open(uploaded_file)
+        img_str = image_to_base64(image)
+
+        with st.expander("Show/Hide Uploaded Image"):
+            # st.image(image, caption="Uploaded Image", use_column_width=False, width=400)
+            st.markdown(
+                f"""
+                <div style='text-align: center;'>
+                    <img src='data:image/png;base64,{img_str}' alt='Uploaded Image' style='width: 400px;'>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        if st.button("Read!"):
+            with st.spinner("Processing..."):
+                # 3. Aplicar inferencia y guardar resultados
+                results = model(image)
+
+                for result in results:
+                    result_path = result.path.split("/")[-1]
+                    result.save_crop(save_dir=f"./{CROPS_DIR}/{result_path}", file_name=f"detection")
+
+                # 4. Aplicar OCR a los resultados
+                classes_folders = glob.glob(f"{CROPS_DIR}/*")
+
+                receipt_data = {}
+
+                total_amount_pattern = r"(\d+[.,]?\d+)"
+                items_pattern = r"^(\d*)\s*([A-Za-z\s.,/-ÁÉÍÓÚÑáéíóúñ]+?)(\d+[.,]?\d*)$"
+
+                for class_folder in classes_folders:
+                    class_label = class_folder.split("/")[-1]
+                    crops_list = glob.glob(f"{class_folder}/*")
+
+                    if class_label != "item_description":
+                        crop_path = crops_list[0] # If there is more than one, takes just the first one
+                        cleaned_text = pytesseract_text_extraction(crop_path)
+
+                        if class_label == "total_amount":
+                            match = re.search(total_amount_pattern, cleaned_text)
+
+                            if match:
+                                cleaned_text = float(match.group(1).replace(",", "."))
+
+                        receipt_data[class_label] = cleaned_text
+
+                    else:
+                        items = []
+
+                        for crop_path in crops_list:
+                            cleaned_text = pytesseract_text_extraction(crop_path)
+                            match = re.match(items_pattern, cleaned_text)
+
+                            if match:
+                                quantity = int(match.group(1)) if match.group(1) else 1 # quantity is optional. Criteria is 1 in case no match
+                                description = match.group(2).strip()  # strip any leading/trailing whitespace
+                                price = float(match.group(3).replace(",", ".")) if match.group(3) else None # price is optional
+                            else:
+                                continue
+
+                            item_dict = {
+                                "quantity": quantity,
+                                "description": description,
+                                "price_eur": price
+                            }
+
+                            items.append(item_dict)
+
+                        receipt_data["items"] = items
+
+                # 5. Devolver e imprimir por pantalla datos estructurados
+                st.write(receipt_data)
+
+                # 6. Borrar directorio con crops después de finalizar OCR
+                if os.path.exists(CROPS_DIR):
+                    shutil.rmtree(CROPS_DIR)
+   
+
+if __name__ == "__main__":
+    main()
