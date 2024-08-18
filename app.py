@@ -14,6 +14,12 @@ from ultralytics import YOLO
 CROPS_DIR = "./st-crops"
 
 def image_to_base64(image: Image) -> str:
+    """
+    Converts a PIL image to a base64 encoded string.
+
+    :param image (Image): The PIL Image object to be encoded.
+    :return img_str (str): The base64 encoded string of the image.
+    """
     buffered = BytesIO()
     image.save(buffered, format="PNG")
     img_str = base64.b64encode(buffered.getvalue()).decode()
@@ -36,7 +42,14 @@ def pytesseract_text_extraction(image_path: str, lang: str = "eng+spa") -> str:
     return cleaned_text
 
 @st.cache_data
-def load_model(model_dir: str):
+def load_model(model_dir: str) -> YOLO:
+    """
+    Loads a YOLO model from the specified directory.
+
+    :param model_dir (str): Path to the directory containing the YOLO model.
+    :return model (YOLO): The loaded YOLO model.
+    """
+
     model = YOLO(model_dir)
     return model
 
@@ -46,7 +59,30 @@ model = load_model("./runs/detect/train7/weights/best.pt")
 def main():
     
     st.title("🧾 Readceipt")
+    st.markdown('*"Turning your messy receipts into clean data, one item at a time!"*')
     st.markdown("<br>", unsafe_allow_html=True)  # Insert a line break
+
+    # Introduction and instructions
+    st.markdown("""
+    ### Welcome to Readceipt!
+    
+    **Readceipt** is an app that leverages state-of-the-art machine learning models to automatically extract and organize information from your receipt images.
+    
+    **How it works:**
+    - **Object Detection:** We use a pre-trained YOLOv8 model to detect key components on your receipt such as total amount, items, and more.
+    - **Optical Character Recognition (OCR):** Once the key components are detected, we use Tesseract OCR to extract the text from these regions.
+    - **Structured Output:** The extracted information is then organized into a structured format for easy viewing.
+
+    **Instructions:**
+    1. **Upload** your receipt image in JPG, JPEG, or PNG format.
+    2. Click the **"Read!"** button to start the processing.
+    3. After a few moments, the extracted data will be displayed in a structured format below.
+    4. Use the **"Download Receipt Data as JSON"** button to save the results to your computer.
+
+    **Note:** The app will automatically clean up any temporary files after the process is completed.
+    """)
+
+    st.markdown("---")
     
     # 2. Subir un imagen
     uploaded_file = st.file_uploader("Choose a receipt file", type=["jpg", "jpeg", "png"])
@@ -126,7 +162,18 @@ def main():
                 # 5. Devolver e imprimir por pantalla datos estructurados
                 st.write(receipt_data)
 
-                # 6. Borrar directorio con crops después de finalizar OCR
+                # 6. Descarga resultados en formato .json
+                json_data = json.dumps(receipt_data, indent=4)
+                json_filename = f"{uploaded_file.name.split('.')[0]}.json"
+
+                st.download_button(
+                    label="Download Receipt Data as JSON",
+                    data=json_data,
+                    file_name=json_filename,
+                    mime="application/json"
+                )
+
+                # 7. Borrar directorio con crops después de finalizar OCR
                 if os.path.exists(CROPS_DIR):
                     shutil.rmtree(CROPS_DIR)
    
