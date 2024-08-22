@@ -13,6 +13,7 @@ runs/detect/*
 # Pre-trained yoov8 models
 yolov8n.pt
 
-# Side scripts
+# Side scripts and additional examples
+sm-example/
 rename_images.py
 pdf_to_image.py
