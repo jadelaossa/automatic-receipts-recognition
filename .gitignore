@@ -17,3 +17,4 @@ yolov8n.pt
 sm-example/
 rename_images.py
 pdf_to_image.py
+image_to_base64.py
