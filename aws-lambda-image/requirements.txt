@@ -2,4 +2,4 @@ botocore
 boto3
 numpy
 opencv-python
-easyocr
+pytesseract

@@ -18,3 +18,7 @@ sm-example/
 rename_images.py
 pdf_to_image.py
 image_to_base64.py
+aws-lambda-image/test_image_1.png
+aws-lambda-image/test_image_2.png
+aws-lambda-image/test_image_3.png
+aws-lambda-image/test_image_4.png
