@@ -63,7 +63,7 @@ def pytesseract_text_extraction(image_path: str, lang: str = "eng+spa") -> str:
 
 def handler(event, context):
     try:
-        base64_image = event["receipt_image"]
+        base64_image = event["body"]
         base64_decoded_image = base64.b64decode(base64_image)
 
         np_array = np.frombuffer(base64_decoded_image, np.uint8)
@@ -177,6 +177,9 @@ def handler(event, context):
 
     return {
         "statusCode": 200,
-        "inferenceTime": infer_time,
-        "body": json.dumps(receipt_data)
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": json.dumps(receipt_data),
+        "isBase64Encoded": False
     }
