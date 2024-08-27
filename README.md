@@ -12,10 +12,14 @@ El proyecto se divide en dos fases principales:
 
 ## Estructura
 
+La estructura del proyecto es la siguiente:
+
 ```
 ├── README.md                       <- Project overview and instructions.
 │
 ├── LICENSE                         <- License for the project's usage.
+│
+├── assets
 │
 ├── app                             <- Main application code and configuration settings for the web app.
 │   ├── app.py
