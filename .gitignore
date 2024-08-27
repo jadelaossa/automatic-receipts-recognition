@@ -16,6 +16,8 @@ yolov8n.pt
 # Side scripts and additional examples
 sm-example/
 app.py
+train.py
+predict.py
 rename_images.py
 pdf_to_image.py
 image_to_base64.py
