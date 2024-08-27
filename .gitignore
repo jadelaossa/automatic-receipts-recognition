@@ -2,7 +2,12 @@
 .venv/
 
 # Data
-data/
+data/real/
+data/digital/
+data/results/
+data/train/images/
+data/valid/images/
+data/test/images/
 crops/
 samples/
 
