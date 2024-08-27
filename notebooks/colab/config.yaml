@@ -1,0 +1,14 @@
+# Path on Google Colab
+path: /content/drive/MyDrive/automatic-receipts-recognition/data/digital/mercadona
+train: train/images  # train images (relative to 'path')
+val: valid/images  # val images (relative to 'path')
+test:  test/images # test images (optional)
+
+
+# Classes
+names: 
+  0: item_description
+  1: store_address
+  2: store_name
+  3: total_amount
+  4: transaction_datetime

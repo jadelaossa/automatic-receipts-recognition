@@ -12,8 +12,8 @@ crops/
 samples/
 
 # Yolov8 run results
-runs/detect/*
-!runs/detect/train7/
+notebooks/colab/runs/detect/*
+!notebooks/colab/runs/detect/train7/
 
 # Pre-trained yoov8 models
 yolov8n.pt
