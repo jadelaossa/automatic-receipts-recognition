@@ -27,4 +27,4 @@ rename_images.py
 pdf_to_image.py
 image_to_base64.py
 testing_api.py
-aws-lambda-image/testing-lambda-local-setup.ipynb
+aws-lambda-image/1-testing-lambda-local-setup.ipynb

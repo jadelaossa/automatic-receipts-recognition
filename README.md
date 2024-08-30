@@ -77,6 +77,12 @@ La estructura del proyecto es la siguiente:
    pip install -r requirements.txt
    ```
 
+## Demo
+
+La siguiente animación muestra cómo la aplicación procesa la imagen de un ticket de compra y extrae sus datos:
+
+<img src="./assets/demo_app.gif" width="640" height="488"/>
+
 ## Licencia
 
 Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
