@@ -2,11 +2,11 @@
 
 ## Descripción
 
-Este proyecto sirve como trabajo de fin de máster del máster en [Ciencia de Datos e Ingeniería de Datos en la Nube de la Universidad de Castilla-La Mancha](http://www.cidaen.es/). El objetivo consiste en desarrollar una aplicación que, mediante la imagen de un ticket de compra sea capaz de convertir la información útil en datos de texto estructurados. Para lograr esto, se combina un algoritmo de detección de objectos, junto con un algoritmo de reconocimiento óptico de caracteres (OCR).
+Este proyecto es el trabajo final del máster en [Ciencia de Datos e Ingeniería de Datos en la Nube de la Universidad de Castilla-La Mancha](http://www.cidaen.es/). Su objetivo es desarrollar una aplicación capaz de convertir automáticamente la información contenida en tickets de compra en datos de texto estructurado, optimizando la gestión de información financiera. Para lograr esto, se combina un algoritmo de detección de objetos con un algoritmo de reconocimiento óptico de caracteres (OCR).
 
 El proyecto se divide en dos fases principales:
 
-1. **Detección de Objetos con YOLOv8**: Se entrena el modelo YOLOv8 de Ultralytics utilizando un conjunto de datos de tickets de compra. El modelo está diseñado para identificar y extraer cinco clases esenciales: Nombre del comercio, dirección del comercio, fecha de facturación, artículos de compra, y la cantidad total.
+1. **Detección de Objetos con YOLOv8**: Se entrena el modelo YOLOv8 de Ultralytics utilizando un conjunto de datos de tickets de compra. El modelo está diseñado para identificar y extraer cinco clases esenciales: nombre del comercio, dirección del comercio, fecha de facturación, artículos de compra y la cantidad total.
 
 2. **Reconocimiento Óptico de Caracteres (OCR) con Tesseract**: Una vez que los elementos clave han sido identificados y extraídos de la imagen, se utiliza Tesseract para realizar OCR y convertir los datos visuales en texto editable.
 
@@ -76,6 +76,12 @@ La estructura del proyecto es la siguiente:
    ```bash
    pip install -r requirements.txt
    ```
+
+## Arquitectura
+
+La arquitectura del proyecto está diseñada para aprovechar AWS Cloud, con componentes que incluyen Amazon SageMaker para el despliegue del modelo YOLOv8 y AWS Lambda para el procesamiento de las imágenes. La siguiente imagen ilustra esta arquitectura:
+
+![](./assets/aws_architecture.png)
 
 ## Demo
 
