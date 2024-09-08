@@ -10,6 +10,7 @@ data/valid/images/
 data/test/images/
 crops/
 samples/
+results.txt
 
 # Yolov8 run results
 history/
@@ -26,4 +27,5 @@ rename_images.py
 pdf_to_image.py
 image_to_base64.py
 testing_api.py
+timeout_estimation.py
 aws-lambda-image/1-testing-lambda-local-setup.ipynb
